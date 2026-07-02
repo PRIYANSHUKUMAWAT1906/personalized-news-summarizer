@@ -5,20 +5,29 @@ import json
 
 load_dotenv()
 
-API_KEY = os.getenv("News_API")
+API_KEY = os.getenv("NEWS_API")
 
 newsapi = NewsApiClient(api_key=API_KEY)
 
-articles = newsapi.get_everything(
-    q="technology",
-    language="en",
-    sort_by="publishedAt",
-    page_size=20
-)
+categories = [
+    "technology",
+    "business",
+    "sports",
+    "health",
+    "science",
+    "entertainment"
+]
 
-print("Articles fetched:", len(articles["articles"]))
+for category in categories:
+    articles = newsapi.get_everything(
+        q=category,
+        language="en",
+        page_size=20
+    )
 
-with open("data/raw/technology_news.json", "w", encoding="utf-8") as f:
-    json.dump(articles["articles"], f, indent=4)
+    filename = f"data/raw/{category}_news.json"
 
-print("Saved successfully!")
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(articles["articles"], f, indent=4)
+
+    print(f"{category}: {len(articles['articles'])} articles saved")
