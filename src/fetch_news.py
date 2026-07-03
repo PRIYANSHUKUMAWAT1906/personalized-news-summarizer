@@ -22,7 +22,7 @@ for category in categories:
     articles = newsapi.get_everything(
         q=category,
         language="en",
-        page_size=20
+        page_size=100
     )
 
     filename = f"data/raw/{category}_news.json"
